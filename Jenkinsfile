@@ -59,6 +59,14 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'reports/*', fingerprint: true
+            publishHTML(target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'reports',
+                reportFiles: 'automation-restful-booker-report.html',
+                reportName: 'Newman HTML Report'
+            ])
         }
         success {
             echo 'Newman execution completed successfully.'
