@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'nodejs-24'
+    }
+
     parameters {
         choice(name: 'TARGET_ENV', choices: ['DEVELOPMENT', 'STAGING'], description: 'Select target environment')
     }
@@ -16,6 +20,8 @@ pipeline {
             steps {
                 echo "Branch: ${env.BRANCH_NAME}"
                 echo "Selected environment: ${params.TARGET_ENV}"
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
