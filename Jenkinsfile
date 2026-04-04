@@ -45,7 +45,7 @@ pipeline {
                         : 'environments/DEVELOPMENT.postman_environment.json'
 
                     sh """
-                        npx newman run collections/automation-restful-booker.postman_collection.json \
+                        npx newman run collections/Automation-Restful-Booker.postman_collection.json \
                         -e ${envFile} \
                         -r cli,htmlextra,json \
                         --reporter-htmlextra-export reports/automation-restful-booker-report.html \
