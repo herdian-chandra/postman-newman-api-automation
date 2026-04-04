@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'nodejs'
+    parameters {
+        choice(name: 'TARGET_ENV', choices: ['DEVELOPMENT', 'STAGING'], description: 'Select target environment')
     }
 
     stages {
@@ -12,29 +12,53 @@ pipeline {
             }
         }
 
+        stage('Show Context') {
+            steps {
+                echo "Branch: ${env.BRANCH_NAME}"
+                echo "Selected environment: ${params.TARGET_ENV}"
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Run API Automation') {
+        stage('Prepare Reports Folder') {
             steps {
-                sh 'chmod +x scripts/run-newman.sh'
-                sh './scripts/run-newman.sh'
+                sh 'mkdir -p reports'
+            }
+        }
+
+        stage('Run Newman') {
+            steps {
+                script {
+                    def envFile = params.TARGET_ENV == 'STAGING'
+                        ? 'environments/STAGING.postman_environment.json'
+                        : 'environments/DEVELOPMENT.postman_environment.json'
+
+                    sh """
+                        npx newman run collections/automation-restful-booker.postman_collection.json \
+                        -e ${envFile} \
+                        -r cli,htmlextra,json \
+                        --reporter-htmlextra-export reports/automation-restful-booker-report.html \
+                        --reporter-json-export reports/newman-result.json
+                    """
+                }
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
+            archiveArtifacts artifacts: 'reports/*', fingerprint: true
         }
         success {
-            echo 'API automation executed successfully.'
+            echo 'Newman execution completed successfully.'
         }
         failure {
-            echo 'API automation execution failed.'
+            echo 'Newman execution failed.'
         }
     }
 }
