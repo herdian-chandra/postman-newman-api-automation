@@ -1,0 +1,168 @@
+{
+  "info": {
+    "_postman_id": "0e85978a-ba1b-4795-be40-12a943b0fc42",
+    "name": "complex-nested-json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26378767"
+  },
+  "item": [
+    {
+      "name": "Get All Products",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json()\r",
+              "\r",
+              "pm.test(\"Verify reviewer Jace Smith with correct email exists\", function () {\r",
+              "\r",
+              "    const allReviews = response.products.flatMap(p => p.reviews)\r",
+              "    console.log(allReviews)\r",
+              "\r",
+              "    const isReviewerExist = allReviews.some(\r",
+              "        r =>\r",
+              "            r.reviewerName === \"Jace Smith\" &&\r",
+              "            r.reviewerEmail === \"jace.smith@x.dummyjson.com\"\r",
+              "    )\r",
+              "\r",
+              "    pm.expect(isReviewerExist).to.be.true\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Calculate total rating from all reviews\", function () {\r",
+              "\r",
+              "    const allReviews = response.products\r",
+              "        .flatMap(p => p.reviews)\r",
+              "\r",
+              "    const totalRating = allReviews.reduce(\r",
+              "        (sum, r) => sum + r.rating,\r",
+              "        0\r",
+              "    )\r",
+              "\r",
+              "    console.log(\"Total Rating:\", totalRating)\r",
+              "\r",
+              "    pm.expect(totalRating).to.be.a(\"number\")\r",
+              "    pm.expect(totalRating).to.be.above(0)\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/products",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json()\r",
+              "console.log(response)\r",
+              "\r",
+              "pm.test(\"Verify Reviewer Email is ruby.andrews@x.dummyjson.com\", function(){\r",
+              "    let x = response.reviews[0].reviewerEmail\r",
+              "\r",
+              "    let getReviwerEmail = \"\"\r",
+              "    for(let i = 0; i < response.reviews.length; i++){\r",
+              "        // console.log(response.reviews[i].reviewerEmail)\r",
+              "        if(response.reviews[i].reviewerEmail === \"ruby.andrews@x.dummyjson.com\"){\r",
+              "            getReviwerEmail = response.reviews[i].reviewerEmail\r",
+              "            break\r",
+              "        }\r",
+              "    }\r",
+              "    console.log(getReviwerEmail)\r",
+              "    pm.expect(getReviwerEmail).to.eql(\"ruby.andrews@x.dummyjson.com\")\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Reviewer email exist (Powerfull Assertion)\", function () {\r",
+              "    pm.expect(\r",
+              "        response.reviews.some(\r",
+              "            r => r.reviewerEmail === \"liam.garcia@x.dummyjson.com\"\r",
+              "        )\r",
+              "    ).to.be.true\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Search amount of total rating\", function () {\r",
+              "    let totalRating = 0\r",
+              "    for(let i = 0; i < response.reviews.length; i++){\r",
+              "        totalRating = totalRating + response.reviews[i].rating\r",
+              "    }\r",
+              "    console.log(totalRating)\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verify total rating of all reviews\", function () {\r",
+              "\r",
+              "    const totalRating = response.reviews.reduce(\r",
+              "        (sum, r) => sum + r.rating, \r",
+              "        0\r",
+              "    )\r",
+              "\r",
+              "    console.log(\"Total Rating:\", totalRating)\r",
+              "\r",
+              "    pm.expect(totalRating).to.be.a(\"number\")\r",
+              "    pm.expect(totalRating).to.be.above(0)\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Verify reviewer names\", function () {\r",
+              "\r",
+              "    const actualReviewerName = response.reviews.map(\r",
+              "        r => r.reviewerName\r",
+              "    )\r",
+              "\r",
+              "    const expectedReviewerName = [\r",
+              "        \"Liam Garcia\",\r",
+              "        \"Ruby Andrews\",\r",
+              "        \"Clara Berry\"\r",
+              "    ]\r",
+              "\r",
+              "    console.log(\"Actual:\", actualReviewerName)\r",
+              "    console.log(\"Expected:\", expectedReviewerName)\r",
+              "\r",
+              "    pm.expect(actualReviewerName).to.eql(expectedReviewerName)\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/products/4",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "products",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
