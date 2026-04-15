@@ -66,26 +66,26 @@ This project covers:
 ## Branch Strategy
 
 This repository uses a simple two-branch workflow:
-• development → active development branch
-• master → stable branch for verified code
+- development → active development branch
+- master → stable branch for verified code
 
 Workflow:
-• all active changes are developed in development
-• stable changes are merged into master
-• Jenkins development job is used for manual testing
-• Jenkins master job is triggered automatically via GitHub webhook
+- all active changes are developed in development
+- stable changes are merged into master
+- Jenkins development job is used for manual testing
+- Jenkins master job is triggered automatically via GitHub webhook
 
 ---
 
 ## Features
 
-• API automation using Postman collections
-• Newman CLI execution
-• HTML report generation with newman-reporter-htmlextra
-• JSON result generation for machine-readable output
-• Jenkins pipeline integration
-• environment selection using Jenkins build parameters
-• GitHub webhook integration for branch-based CI execution
+- API automation using Postman collections
+- Newman CLI execution
+- HTML report generation with newman-reporter-htmlextra
+- JSON result generation for machine-readable output
+- Jenkins pipeline integration
+- environment selection using Jenkins build parameters
+- GitHub webhook integration for branch-based CI execution
 
 ---
 
@@ -112,24 +112,24 @@ This project is integrated with Jenkins and currently supports two pipeline jobs
 #### Development Job
 
 Used for manual execution and pipeline testing.
-• Branch: development
-• Trigger: manual
-• Parameter: TARGET_ENV
+- Branch: development
+- Trigger: manual
+- Parameter: TARGET_ENV
 
 #### Master Job
 
 Used for stable execution from the master branch.
-• Branch: master
-• Trigger: GitHub webhook
-• Optional: scheduled execution
+- Branch: master
+- Trigger: GitHub webhook
+- Optional: scheduled execution
 
 ---
 
 ## Reporting
 
 The pipeline generates two report outputs:
-• HTML report for visual inspection
-• JSON report for structured machine-readable output
+-  HTML report for visual inspection
+- JSON report for structured machine-readable output
 
 Output Location
 
@@ -156,13 +156,13 @@ newman run collections/Automation-Restful-Booker.postman_collection.json \
 ## Jenkins Pipeline Highlights
 
 The Jenkins pipeline in this repository includes:
-• source code checkout from GitHub
-• Node.js runtime setup through Jenkins tools
-• dependency installation using npm
-• report folder preparation
-• Newman execution with selected environment
-• artifact archiving
-• HTML report publishing
+- source code checkout from GitHub
+- Node.js runtime setup through Jenkins tools
+- dependency installation using npm
+- report folder preparation
+- Newman execution with selected environment
+- artifact archiving
+- HTML report publishing
 
 ![Jenkins Pipeline](docs/jenkins-pipeline-development.png)
 ![Jenkins Pipeline](docs/jenkins-pipeline-master.png)
